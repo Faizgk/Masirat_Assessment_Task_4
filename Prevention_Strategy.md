@@ -1,6 +1,6 @@
 ﻿# Masirat_Assessment_Task_4
 
-PREVENTION STRATEGY
+**PREVENTION STRATEGY**
 
 1. Schema Validation at the Database Level
   we can enforce MongoDB JSON Schema Validation at the database level. This acts as a final firewall, rejecting any insert or update that doesn't meet our requirements.
