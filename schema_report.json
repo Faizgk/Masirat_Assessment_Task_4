@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "697f797eb998d166fa5f7ea7",
+    "issues": [
+      "title missing or wrong type"
+    ],
+    "document": {
+      "_id": "697f797eb998d166fa5f7ea7",
+      "title": null,
+      "excerpt": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+      "views": 50
+    }
+  },
+  {
+    "_id": "697f797eb998d166fa5f7ea8",
+    "issues": [
+      "excerpt missing or wrong type"
+    ],
+    "document": {
+      "_id": "697f797eb998d166fa5f7ea8",
+      "title": "Fourth Blog Post",
+      "publishedAt": "2026-01-10T00:00:00.000Z",
+      "views": 75
+    }
+  }
+]
