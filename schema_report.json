@@ -1,26 +1,61 @@
 [
   {
-    "_id": "697f797eb998d166fa5f7ea7",
+    "_id": "697fc767b998d166fa5f7eb3",
     "issues": [
-      "title missing or wrong type"
+      "title missing"
     ],
-    "document": {
-      "_id": "697f797eb998d166fa5f7ea7",
-      "title": null,
-      "excerpt": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    "suggestedFix": {
+      "$set": {
+        "title": "Untitled Post"
+      },
+      "$unset": {}
+    },
+    "currentData": {
+      "_id": "697fc767b998d166fa5f7eb3",
+      "excerpt": "Missing title entirely.",
       "views": 50
     }
   },
   {
-    "_id": "697f797eb998d166fa5f7ea8",
+    "_id": "697fc767b998d166fa5f7eb4",
     "issues": [
-      "excerpt missing or wrong type"
+      "views wrong type",
+      "publishedAt wrong type (string instead of Date)"
     ],
-    "document": {
-      "_id": "697f797eb998d166fa5f7ea8",
-      "title": "Fourth Blog Post",
-      "publishedAt": "2026-01-10T00:00:00.000Z",
-      "views": 75
+    "suggestedFix": {
+      "$set": {
+        "views": 250,
+        "publishedAt": "2024-05-20T00:00:00.000Z"
+      },
+      "$unset": {}
+    },
+    "currentData": {
+      "_id": "697fc767b998d166fa5f7eb4",
+      "title": "Numeric String Test",
+      "excerpt": "Views is a string, Date is a string.",
+      "views": "250",
+      "publishedAt": "2024-05-20"
+    }
+  },
+  {
+    "_id": "697fc767b998d166fa5f7eb5",
+    "issues": [
+      "views is not a valid number",
+      "publishedAt is invalid date"
+    ],
+    "suggestedFix": {
+      "$set": {
+        "views": 0,
+        "publishedAt": "2026-02-01T21:36:54.556Z"
+      },
+      "$unset": {}
+    },
+    "currentData": {
+      "_id": "697fc767b998d166fa5f7eb5",
+      "title": "Total Garbage Data",
+      "excerpt": "Invalid view count and unparseable date.",
+      "views": "NotANumber",
+      "publishedAt": "InvalidDateString"
     }
   }
 ]

@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 const fs = require("fs");
 
@@ -25,33 +24,57 @@ db.once("open", async () => {
 
 
     try {
-        const docs = await Blog.find({});
+        const docs = await Blog.find({}).lean();
         const report = [];
 
         docs.forEach(doc => {
             const issues = [];
+            const fixAction = { $set: {}, $unset: {} };
 
             // here I check all the required fields
-            if (!doc.title || typeof doc.title !== "string") issues.push("title missing or wrong type");
-            if (!doc.excerpt || typeof doc.excerpt !== "string") issues.push("excerpt missing or wrong type");
+            if (!doc.title) {
+                issues.push("title missing");
+                fixAction.$set.title = "Untitled Post";
+            } else if (typeof doc.title !== "string") {
+                issues.push("title wrong type");
+                fixAction.$set.title = String(doc.title);
+            }
 
             //views and publishedAt might not necessarily be present in the new documents, but if present it should be of correct type
-            if (doc.views != null && typeof doc.views !== "number") issues.push("views wrong type");
-            if (doc.publishedAt != null && !(doc.publishedAt instanceof Date)) issues.push("publishedAt wrong type");
+            if (doc.views != null && isNaN(Number(doc.views))) {
+                issues.push("views is not a valid number");
+                fixAction.$set.views = 0;
+            } else if (doc.views != null && typeof doc.views !== "number") {
+                issues.push("views wrong type");
+                // Convert string numbers to actual numbers
+                fixAction.$set.views = Number(doc.views);
+            }
 
-            //create report entry if issues are found
+            if (doc.publishedAt != null && !(doc.publishedAt instanceof Date)) {
+                const dateVal = new Date(doc.publishedAt);
+
+                if (isNaN(dateVal.getTime())) {
+                    issues.push("publishedAt is invalid date");
+                    // Fallback to now
+                    fixAction.$set.publishedAt = new Date();
+                } else {
+                    issues.push("publishedAt wrong type (string instead of Date)");
+                    fixAction.$set.publishedAt = dateVal;
+                }
+            }
+
             if (issues.length > 0) {
                 report.push({
                     _id: doc._id,
                     issues,
-                    document: doc.toObject()
+                    suggestedFix: fixAction,
+                    currentData: doc
                 });
             }
         });
 
-        // Save report
+        //Save report
         fs.writeFileSync("schema_report.json", JSON.stringify(report, null, 2));
-
         console.log(`Report generated: ${report.length} problematic documents found`);
 
     } catch (err) {
